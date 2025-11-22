@@ -1,0 +1,15 @@
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.GeneratedMSBuildEditorConfig.editorconfig
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.AssemblyInfoInputs.cache
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.AssemblyInfo.cs
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.csproj.CoreCompileInputs.cache
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.sourcelink.json
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/Factorial
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.dll
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/refint/Factorial.dll
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.pdb
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/Factorial.deps.json
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/Factorial.genruntimeconfig.cache
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/Factorial.runtimeconfig.json
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/Factorial.dll
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/Debug/net8.0/ref/Factorial.dll
+/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/Factorial.pdb
