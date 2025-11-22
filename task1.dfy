@@ -19,9 +19,8 @@ method Abs(x: int) returns (x': int)
   }
 }
 
-// ======================================================================
 // This Main method is the standard entry point for execution.
-// ======================================================================
+
 method Main() {
   // Test case 1: Positive number
   var result1 := Abs(10);
