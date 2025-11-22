@@ -1,0 +1,15 @@
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.GeneratedMSBuildEditorConfig.editorconfig
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.AssemblyInfoInputs.cache
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.AssemblyInfo.cs
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.csproj.CoreCompileInputs.cache
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.sourcelink.json
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task1
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.dll
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/refint/task1.dll
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.pdb
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task1.deps.json
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/task1.genruntimeconfig.cache
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task1.runtimeconfig.json
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task1.dll
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/Debug/net8.0/ref/task1.dll
+/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task1.pdb

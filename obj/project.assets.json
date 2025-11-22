@@ -954,9 +954,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task4.csproj",
-      "projectName": "task4",
-      "projectPath": "/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task4.csproj",
+      "projectUniqueName": "/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task1.csproj",
+      "projectName": "task1",
+      "projectPath": "/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/task1.csproj",
       "packagesPath": "/Users/spkonjeti/.nuget/packages/",
       "outputPath": "/Users/spkonjeti/SriPujithaKonjeti/BITS/3-1/Logic/Assignment2/Daphny/obj/",
       "projectStyle": "PackageReference",
