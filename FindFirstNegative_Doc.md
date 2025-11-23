@@ -1,30 +1,29 @@
 # **Method: FindFirstNegative**
 
-The FindFirstNegative method is an algorithm designed to search through an integer array to locate the index of the first negative number. If the array contains no negative numbers, the method returns the length of the array.
+The FindFirstNegative method is a verified linear search algorithm that iterates through an integer array to find the index of the first negative value. If no negative numbers are found, the method correctly returns the length of the array to indicate the "not found" status.
 
-This method employs a linear search strategy, iterating through the array from the beginning until a negative value is encountered or the end of the array is reached.
+The implementation is verified for correctness, ensuring that it not only finds a negative number if one exists but specifically finds the *first* one, and correctly reports if none exist.
 
 ## **Preconditions**
 
-Preconditions define the state that must be true before the method is called. For FindFirstNegative, the requirements are minimal:
+Preconditions define the constraints that must be met before the method is called.
 
-* **Valid Array Length:** The length of the input array a must be non-negative (a.Length \>= 0).  
-  * *Note:* Dafny handles empty arrays (length 0\) correctly within the logic, returning 0 as the "not found" index equivalent to the length.
+* **Array Validity:** The input array a must have a non-negative length (a.Length \>= 0). This is a standard requirement for array processing, though Dafny naturally enforces non-negative lengths for array types.
 
 ## **Postconditions**
 
-Postconditions guarantee the state of the system after the method has finished executing. They formally define the correctness of the result index.
+The postconditions serve as a contract, guaranteeing the state of the result (index) after the method executes.
 
-1. **Bounds Safety:** The returned index is guaranteed to be within the inclusive range \[0, a.Length\].  
-2. **Correct Identification:** If the returned index is less than the array length, the element at that position (a\[index\]) is strictly less than 0\.  
-3. **First Occurrence Property:** If a negative number is found at index, all elements preceding it (indices 0 to index-1) must be non-negative. This ensures the method finds the *first* negative number, not just *any* negative number.  
-4. **Not Found Scenario:** If the returned index equals a.Length, it implies that no negative numbers exist in the entire array (i.e., all elements are non-negative).
+1. **Result Bounds:** The returned index will always be in the range \[0, a.Length\].  
+2. **Valid Detection:** If index is strictly less than a.Length, the value at a\[index\] is guaranteed to be negative (a\[index\] \< 0).  
+3. **First Occurrence Guarantee:** If a negative value is found at index, the method ensures that *no* negative values exist at any index k before it (0 \<= k \< index). This proves it is the *first* negative number.  
+4. **Not Found Integrity:** If the method returns a.Length, it guarantees that the entire array contains no negative numbers (i.e., forall k :: 0 \<= k \< a.Length \==\> a\[k\] \>= 0).
 
 ## **Loop Invariant**
 
-To prove the loop functions correctly and terminates, Dafny uses loop invariants. These are properties that hold true before and after every iteration.
+The loop invariants explain "why it works" to the verifier, acting as the inductive proof of correctness during the iteration.
 
-1. **Bounds Maintenance:** The loop counter i always remains within the valid range 0 \<= i \<= a.Length.  
-2. **Search Progress (Partial Correctness):** At any point i in the loop, we have verified that all elements examined so far (from index 0 to i-1) are non-negative.  
+1. **Bounds Logic:** The loop counter i is strictly maintained within the valid range 0 \<= i \<= a.Length.  
+2. **Partial Correctness (The "Crucial" Invariant):** At the start of every iteration i, the algorithm has already verified that all elements checked so far (indices 0 to i-1) are non-negative.  
    * invariant forall k :: 0 \<= k \< i \==\> a\[k\] \>= 0  
-   * This invariant is crucial because if the loop terminates by reaching a.Length, this logic proves that *every* element in the array was checked and found to be non-negative.
+   * This ensures that if the loop eventually finds a negative number at i, it is genuinely the *first* one because strictly everything before i was non-negative. Conversely, if the loop reaches the end (i \== a.Length), this invariant implies the entire array is non-negative.
