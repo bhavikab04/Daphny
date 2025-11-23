@@ -949,19 +949,19 @@
     ]
   },
   "packageFolders": {
-    "/home/bhavika/.nuget/packages/": {}
+    "C:\\Users\\sdhar\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/Factorial.csproj",
-      "projectName": "Factorial",
-      "projectPath": "/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/Factorial.csproj",
-      "packagesPath": "/home/bhavika/.nuget/packages/",
-      "outputPath": "/home/bhavika/Users/Bhavika/BITS - Acads/3-1/Logic/Daphny/obj/",
+      "projectUniqueName": "C:\\Users\\sdhar\\OneDrive\\Desktop\\Dharshana\\BITS Hyderabad_BE+MSc\\3rd yr 1st sem\\Logic\\Daphny\\task2.csproj",
+      "projectName": "task2",
+      "projectPath": "C:\\Users\\sdhar\\OneDrive\\Desktop\\Dharshana\\BITS Hyderabad_BE+MSc\\3rd yr 1st sem\\Logic\\Daphny\\task2.csproj",
+      "packagesPath": "C:\\Users\\sdhar\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sdhar\\OneDrive\\Desktop\\Dharshana\\BITS Hyderabad_BE+MSc\\3rd yr 1st sem\\Logic\\Daphny\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/bhavika/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\sdhar\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -979,7 +979,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -1005,12 +1011,30 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.22, 8.0.22]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.22, 8.0.22]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.22, 8.0.22]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.22, 8.0.22]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
