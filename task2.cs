@@ -36,15 +36,30 @@ method FindFirstNegative(a: array<int>) returns (index: int)
 
 method Main(_noArgsParameter: seq<seq<char>>)
 {
-  var a := new int[5] ((i: nat) => if i == 2 then -5 else i);
+  var a := new int[5];
+  a[0] := 0;
+  a[1] := 1;
+  a[2] := -5;
+  a[3] := 3;
+  a[4] := 4;
   var index1 := FindFirstNegative(a);
-  print ""Array: "", a, "" | Result: "", index1, ""\n"";
-  var b := new int[4] ((i: nat) => i + 1);
+  print ""Test 1: "", a[..], "" | Result: "", index1, ""\n"";
+  assert index1 == 2;
+  var b := new int[4];
+  b[0] := 1;
+  b[1] := 2;
+  b[2] := 3;
+  b[3] := 4;
   var index2 := FindFirstNegative(b);
-  print ""Array: "", b, "" | Result: "", index2, ""\n"";
-  var c2 := new int[3] ((i: nat) => if i == 0 then -1 else 1);
-  var index3 := FindFirstNegative(c2);
-  print ""Array: "", c2, "" | Result: "", index3, ""\n"";
+  print ""Test 2: "", b[..], "" | Result: "", index2, ""\n"";
+  assert index2 == 4;
+  var c := new int[3];
+  c[0] := -1;
+  c[1] := 1;
+  c[2] := 1;
+  var index3 := FindFirstNegative(c);
+  print ""Test 3: "", c[..], "" | Result: "", index3, ""\n"";
+  assert index3 == 0;
 }
 ")]
 
@@ -5740,58 +5755,52 @@ namespace _module {
     public static void _Main(Dafny.ISequence<Dafny.ISequence<Dafny.Rune>> __noArgsParameter)
     {
       BigInteger[] _0_a;
-      Func<BigInteger, BigInteger> _init0 = ((System.Func<BigInteger, BigInteger>)((_1_i) => {
-        return (((_1_i) == (new BigInteger(2))) ? (new BigInteger(-5)) : (_1_i));
-      }));
       BigInteger[] _nw0 = new BigInteger[Dafny.Helpers.ToIntChecked(new BigInteger(5), "array size exceeds memory limit")];
-      for (var _i0_0 = 0; _i0_0 < new BigInteger(_nw0.Length); _i0_0++) {
-        _nw0[(int)(_i0_0)] = _init0(_i0_0);
-      }
       _0_a = _nw0;
-      BigInteger _2_index1;
+      (_0_a)[(int)((BigInteger.Zero))] = BigInteger.Zero;
+      (_0_a)[(int)((BigInteger.One))] = BigInteger.One;
+      (_0_a)[(int)((new BigInteger(2)))] = new BigInteger(-5);
+      (_0_a)[(int)((new BigInteger(3)))] = new BigInteger(3);
+      (_0_a)[(int)((new BigInteger(4)))] = new BigInteger(4);
+      BigInteger _1_index1;
       BigInteger _out0;
       _out0 = __default.FindFirstNegative(_0_a);
-      _2_index1 = _out0;
-      Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("Array: ")).ToVerbatimString(false));
-      Dafny.Helpers.Print((_0_a));
+      _1_index1 = _out0;
+      Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("Test 1: ")).ToVerbatimString(false));
+      Dafny.Helpers.Print((Dafny.Helpers.SeqFromArray(_0_a)));
       Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString(" | Result: ")).ToVerbatimString(false));
-      Dafny.Helpers.Print((_2_index1));
+      Dafny.Helpers.Print((_1_index1));
       Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("\n")).ToVerbatimString(false));
-      BigInteger[] _3_b;
-      Func<BigInteger, BigInteger> _init1 = ((System.Func<BigInteger, BigInteger>)((_4_i) => {
-        return (_4_i) + (BigInteger.One);
-      }));
+      BigInteger[] _2_b;
       BigInteger[] _nw1 = new BigInteger[Dafny.Helpers.ToIntChecked(new BigInteger(4), "array size exceeds memory limit")];
-      for (var _i0_1 = 0; _i0_1 < new BigInteger(_nw1.Length); _i0_1++) {
-        _nw1[(int)(_i0_1)] = _init1(_i0_1);
-      }
-      _3_b = _nw1;
-      BigInteger _5_index2;
+      _2_b = _nw1;
+      (_2_b)[(int)((BigInteger.Zero))] = BigInteger.One;
+      (_2_b)[(int)((BigInteger.One))] = new BigInteger(2);
+      (_2_b)[(int)((new BigInteger(2)))] = new BigInteger(3);
+      (_2_b)[(int)((new BigInteger(3)))] = new BigInteger(4);
+      BigInteger _3_index2;
       BigInteger _out1;
-      _out1 = __default.FindFirstNegative(_3_b);
-      _5_index2 = _out1;
-      Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("Array: ")).ToVerbatimString(false));
-      Dafny.Helpers.Print((_3_b));
+      _out1 = __default.FindFirstNegative(_2_b);
+      _3_index2 = _out1;
+      Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("Test 2: ")).ToVerbatimString(false));
+      Dafny.Helpers.Print((Dafny.Helpers.SeqFromArray(_2_b)));
       Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString(" | Result: ")).ToVerbatimString(false));
-      Dafny.Helpers.Print((_5_index2));
+      Dafny.Helpers.Print((_3_index2));
       Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("\n")).ToVerbatimString(false));
-      BigInteger[] _6_c2;
-      Func<BigInteger, BigInteger> _init2 = ((System.Func<BigInteger, BigInteger>)((_7_i) => {
-        return (((_7_i).Sign == 0) ? (new BigInteger(-1)) : (BigInteger.One));
-      }));
+      BigInteger[] _4_c;
       BigInteger[] _nw2 = new BigInteger[Dafny.Helpers.ToIntChecked(new BigInteger(3), "array size exceeds memory limit")];
-      for (var _i0_2 = 0; _i0_2 < new BigInteger(_nw2.Length); _i0_2++) {
-        _nw2[(int)(_i0_2)] = _init2(_i0_2);
-      }
-      _6_c2 = _nw2;
-      BigInteger _8_index3;
+      _4_c = _nw2;
+      (_4_c)[(int)((BigInteger.Zero))] = new BigInteger(-1);
+      (_4_c)[(int)((BigInteger.One))] = BigInteger.One;
+      (_4_c)[(int)((new BigInteger(2)))] = BigInteger.One;
+      BigInteger _5_index3;
       BigInteger _out2;
-      _out2 = __default.FindFirstNegative(_6_c2);
-      _8_index3 = _out2;
-      Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("Array: ")).ToVerbatimString(false));
-      Dafny.Helpers.Print((_6_c2));
+      _out2 = __default.FindFirstNegative(_4_c);
+      _5_index3 = _out2;
+      Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("Test 3: ")).ToVerbatimString(false));
+      Dafny.Helpers.Print((Dafny.Helpers.SeqFromArray(_4_c)));
       Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString(" | Result: ")).ToVerbatimString(false));
-      Dafny.Helpers.Print((_8_index3));
+      Dafny.Helpers.Print((_5_index3));
       Dafny.Helpers.Print((Dafny.Sequence<Dafny.Rune>.UnicodeFromString("\n")).ToVerbatimString(false));
     }
   }
