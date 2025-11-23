@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://bhavikab04.github.io/Daphny/FindFirstNegative_Doc/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
     <title>Find First Negative - Daphny</title>
     <link rel="stylesheet" href="../css/theme.css" />
@@ -14,7 +14,7 @@
         // Current page data
         var mkdocs_page_name = "Find First Negative";
         var mkdocs_page_input_path = "FindFirstNegative_Doc.md";
-        var mkdocs_page_url = null;
+        var mkdocs_page_url = "/Daphny/FindFirstNegative_Doc/";
       </script>
     
     <!--[if lt IE 9]>
@@ -55,6 +55,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#postconditions">Postconditions</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#loop-invariant">Loop Invariant</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#recorded-initial-failures">Recorded initial failures</a>
     </li>
     </ul>
                 </li>
@@ -114,6 +116,19 @@
 <li><code>invariant forall k :: 0 &lt;= k &lt; i ==&gt; a[k] &gt;= 0</code></li>
 <li>This ensures that if the loop eventually finds a negative number at i, it is genuinely the <em>first</em> one because strictly everything before i was non-negative. Conversely, if the loop reaches the end <code>(i == a.Length)</code>, this invariant implies the entire array is non-negative.</li>
 </ol>
+<h2 id="recorded-initial-failures">Recorded initial failures</h2>
+<ul>
+<li>
+<p>In the first version of the code, I encountered a verification error when I set <code>requires a != null</code> as one of the preconditions.</p>
+</li>
+<li>
+<p>The error <code>variable 'a' to have the value 'null'</code> happened because in modern Dafny, arrays are <em>"non-null"</em> by default.
+  Since I explicitly asked the verifier to check <code>requires a != null</code>, which is now redundant and causes an error.</p>
+</li>
+<li>
+<p>It has started working from the 2nd version.</p>
+</li>
+</ul>
               
             </div>
           </div><footer>

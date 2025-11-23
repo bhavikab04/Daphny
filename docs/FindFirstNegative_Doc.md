@@ -27,3 +27,12 @@ The loop invariants explain "why it works" to the verifier, acting as the induct
 2. **Partial Correctness (The "Crucial" Invariant):** At the start of every iteration i, the algorithm has already verified that all elements checked so far (indices 0 to i-1) are non-negative.
    - `invariant forall k :: 0 <= k < i ==> a[k] >= 0`
    - This ensures that if the loop eventually finds a negative number at i, it is genuinely the _first_ one because strictly everything before i was non-negative. Conversely, if the loop reaches the end `(i == a.Length)`, this invariant implies the entire array is non-negative.
+
+## Recorded initial failures
+
+- In the first version of the code, I encountered a verification error when I set `requires a != null` as one of the preconditions.
+
+- The error `variable 'a' to have the value 'null'` happened because in modern Dafny, arrays are _"non-null"_ by default.
+  Since I explicitly asked the verifier to check `requires a != null`, which is now redundant and causes an error.
+
+- It has started working from the 2nd version.
