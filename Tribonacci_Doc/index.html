@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Tribonacci - Daphny</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tribonacci";
+        var mkdocs_page_input_path = "Tribonacci_Doc.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Daphny
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AbsoluteValue_Doc/">Absolute Value</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../FindFirstNegative_Doc/">Find First Negative</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Factorial_Doc/">Factorial</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Tribonacci</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#preconditions">Preconditions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#postconditions">Postconditions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#loop-invariant">Loop Invariant</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Daphny</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Tribonacci</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="method-computetrib"><strong>Method: ComputeTrib</strong></h1>
+<p>The ComputeTrib method calculates the <span class="arithmatex">\(n\)</span>-th Tribonacci number iteratively. The Tribonacci sequence is similar to the Fibonacci sequence, but each term is the sum of the <em>three</em> previous terms rather than two. The sequence starts with 0, 1, 1.</p>
+<p>This method uses a "sliding window" approach to calculate the value in <span class="arithmatex">\(O(n)\)</span> time complexity and <span class="arithmatex">\(O(1)\)</span> space complexity, avoiding the exponential cost of naive recursion.</p>
+<h2 id="preconditions"><strong>Preconditions</strong></h2>
+<ul>
+<li><strong>Natural Number Input:</strong> The input n must be a non-negative integer (nat). This implies <code>n &gt;= 0</code>.</li>
+</ul>
+<h2 id="postconditions"><strong>Postconditions</strong></h2>
+<ul>
+<li><strong>Correctness:</strong> The returned value res is guaranteed to be equal to <code>Trib(n)</code>, where Trib is the mathematical function defining the sequence recursively.</li>
+</ul>
+<h2 id="loop-invariant"><strong>Loop Invariant</strong></h2>
+<p>The loop invariants are critical here to prove that the three variables (a, b, c) correctly represent the "window" of the Tribonacci sequence at any step i.</p>
+<ol>
+<li><strong>Counter Range:</strong> The loop counter i is strictly within the range <code>1 &lt;= i &lt;= n</code>.</li>
+<li><strong>Window Consistency:</strong> The variables a, b, and c always map to specific positions in the sequence relative to i:</li>
+<li>a represents <span class="arithmatex">\(T(i-1)\)</span></li>
+<li>b represents <span class="arithmatex">\(T(i)\)</span> (This is the value tracked for the final result)</li>
+<li>c represents <span class="arithmatex">\(T(i+1)\)</span></li>
+</ol>
+<p>By maintaining this window, the algorithm ensures that when the loop terminates <code>(at i == n)</code>, the variable b holds the value of <span class="arithmatex">\(T(n)\)</span>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Factorial_Doc/" class="btn btn-neutral float-left" title="Factorial"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Factorial_Doc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
