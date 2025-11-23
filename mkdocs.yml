@@ -1,6 +1,8 @@
 site_name: Daphny
 theme: readthedocs
 
+site_url: https://bhavikab04.github.io/Daphny/
+
 nav:
   - Home: index.md
   - Absolute Value: AbsoluteValue_Doc.md
