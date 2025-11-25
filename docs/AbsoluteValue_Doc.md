@@ -24,3 +24,52 @@ This method does not contain any loops; it utilizes a simple conditional branchi
 - **Logic Flow:**
   - If `x >= 0`, the method returns x.
   - If `x < 0`, the method returns the negation \-x (which results in a positive integer).
+
+## Cases where it fails
+
+### Case A: The "Too Strict" Precondition (Verification Failure at Call Site)
+
+**Hypothesis:** What if we force the user to only input positive numbers?
+
+```dafny
+method AbsStrict(x: int) returns (x': int)
+    requires x >= 0  // <--- BAD PRECONDITION for a general Abs function
+    ensures x' == x
+{
+    x' := x;
+}
+
+method Main() {
+    var res := AbsStrict(-5); // ERROR: Verification Failed Here!
+}
+
+Result: VERIFICATION FAILED.
+
+Reason: The method AbsStrict is verified correctly internally (it does what it says it will do), but the Main method fails verification because we violated the requires x >= 0 rule by passing -5.```
+
+
+
+### Case B: The "Wrong" Postcondition (Verification Failure in Logic)
+Hypothesis: What if we promise that the output equals the input, even for negative numbers?
+
+method AbsWrong(x: int) returns (x': int)
+    ensures x' == x // <--- WRONG POSTCONDITION
+{
+    if x < 0 {
+        x' := -x; // Logic returns positive
+    } else {
+        x' := x;
+    }
+}
+
+Result: VERIFICATION FAILED.
+
+Reason: Dafny analyzes the if x < 0 branch and finds a contradiction:
+
+It sees x = -5.
+
+The logic sets x' = 5 (because -(-5) = 5).
+
+The postcondition expects x' == x (i.e., it expects 5 == -5).
+
+Since 5 == -5 is false, Dafny reports that the code does not satisfy the postcondition.
