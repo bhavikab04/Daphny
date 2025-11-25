@@ -15,9 +15,9 @@ method FindFirstNegative(a: array<int>) returns (index: int)
   var i := 0;
 
   while i < a.Length
-    // Loop Invariants (The "Why it works" logic)
+    // Loop Invariants
     invariant 0 <= i <= a.Length
-    // Crucial: We know everything checked so far (0 to i-1) is non-negative
+    // We know everything checked so far (0 to i-1) is non-negative
     invariant forall k :: 0 <= k < i ==> a[k] >= 0
     decreases a.Length - i
   {
