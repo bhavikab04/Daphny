@@ -54,18 +54,18 @@ The following test methods contain intentional errors in either the code logic o
 | Component | Intentional Change | Failure Location | Reason |
 | :--- | :--- | :--- | :--- |
 | **Code Initialization** | `var result := 0;` (Should be `1`) | The `invariant result == FactorialFunction(i)` | At the start of the loop, `i=0`. The invariant requires $result = 0! = 1$. The code provides $result = 0$, violating the invariant before the loop begins. |
-| **Dafny Error** | | | *Loop invariant will not hold at the beginning of the loop.* |
+| **Dafny Error** | | | *Loop invariant may not hold at the beginning of the loop.* |
 
 ### Case C: Failure Due to Incorrect Loop Invariant (Factorial_Fail_Invariant_Maintenance)
 
 | Component | Intentional Change | Failure Location | Reason |
 | :--- | :--- | :--- | :--- |
 | **Loop Body** | Skipped `result := result * i;` | The `invariant result == FactorialFunction(i)` | The invariant holds for the old `i`. When `i` increments, the stored `result` is only $i!$ (because multiplication was skipped), which is not equal to $(i+1)!$, violating the invariant for the new value of `i`. |
-| **Dafny Error** | | | *Loop invariant will not be maintained by the loop body.* |
+| **Dafny Error** | | | *Loop invariant may not be maintained by the loop body.* |
 
 ### Case D: Failure Due to Incorrect Loop Variant (Factorial_Fail_Variant)
 
 | Component | Intentional Change | Failure Location | Reason |
 | :--- | :--- | :--- | :--- |
 | **Loop Variant** (`decreases`) | `decreases n` | The `decreases n` clause | The variant expression must strictly decrease with every iteration. Since `n` is a constant and remains unchanged, it fails the strict decrease requirement, indicating a potential non-terminating loop. |
-| **Dafny Error** | | | *The loop variant will not decrease.* |
+| **Dafny Error** | | | *The loop variant may not decrease.* |
