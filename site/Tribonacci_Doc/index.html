@@ -58,11 +58,29 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Tribonacci</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#preconditions">Preconditions</a>
+    <li class="toctree-l2"><a class="reference internal" href="#1-introduction">1. Introduction</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#postconditions">Postconditions</a>
+    <li class="toctree-l2"><a class="reference internal" href="#2-formal-specification">2. Formal Specification</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#21-preconditions">2.1 Preconditions</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#loop-invariant">Loop Invariant</a>
+    <li class="toctree-l3"><a class="reference internal" href="#22-postconditions">2.2 Postconditions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-loop-mechanics">3. Loop Mechanics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#31-loop-invariants">3.1 Loop Invariants</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#32-loop-variant">3.2 Loop Variant</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-verification-test-cases">4. Verification Test Cases</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#41-passing-test-cases">4.1 Passing Test Cases</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
@@ -90,27 +108,280 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="method-computetrib"><strong>Method: ComputeTrib</strong></h1>
-<p>The ComputeTrib method calculates the <span class="arithmatex">\(n\)</span>-th Tribonacci number iteratively. The Tribonacci sequence is similar to the Fibonacci sequence, but each term is the sum of the <em>three</em> previous terms rather than two. The sequence starts with 0, 1, 1.</p>
-<p>This method uses a "sliding window" approach to calculate the value in <span class="arithmatex">\(O(n)\)</span> time complexity and <span class="arithmatex">\(O(1)\)</span> space complexity, avoiding the exponential cost of naive recursion.</p>
-<h2 id="preconditions"><strong>Preconditions</strong></h2>
-<ul>
-<li><strong>Natural Number Input:</strong> The input n must be a non-negative integer (nat). This implies <code>n &gt;= 0</code>.</li>
-</ul>
-<h2 id="postconditions"><strong>Postconditions</strong></h2>
-<ul>
-<li><strong>Correctness:</strong> The returned value res is guaranteed to be equal to <code>Trib(n)</code>, where Trib is the mathematical function defining the sequence recursively.</li>
-</ul>
-<h2 id="loop-invariant"><strong>Loop Invariant</strong></h2>
-<p>The loop invariants are critical here to prove that the three variables (a, b, c) correctly represent the "window" of the Tribonacci sequence at any step i.</p>
+                <h1 id="formal-verification-report-the-computetrib-method">Formal Verification Report: The ComputeTrib Method</h1>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>The <code>ComputeTrib</code> method calculates the <span class="arithmatex">\(n\)</span>-th Tribonacci number iteratively. The Tribonacci sequence is similar to the Fibonacci sequence, but each term is the sum of the <em>three</em> previous terms rather than two. The sequence is defined recursively as follows:</p>
+<div class="arithmatex">\[
+T(n) = \begin{cases}
+0 &amp; \text{if } n = 0 \\
+1 &amp; \text{if } n = 1 \\
+1 &amp; \text{if } n = 2 \\
+T(n-1) + T(n-2) + T(n-3) &amp; \text{if } n &gt; 2
+\end{cases}
+\]</div>
+<p>The sequence begins: <span class="arithmatex">\(0, 1, 1, 2, 4, 7, 13, \dots\)</span></p>
+<p>This method utilizes a "sliding window" approach to calculate the value in <span class="arithmatex">\(O(n)\)</span> time complexity and <span class="arithmatex">\(O(1)\)</span> space complexity, avoiding the exponential cost of naive recursion. This report documents all correctness conditions used in the Dafny implementation, records verification failures encountered during experimentation, and explains the rationale behind those failures.</p>
+<hr />
+<h2 id="2-formal-specification">2. Formal Specification</h2>
+<h3 id="21-preconditions">2.1 Preconditions</h3>
+<p><strong>Final Correct Preconditions (Working Version)</strong></p>
+<blockquote>
+<p><code>requires n &gt;= 0</code></p>
+</blockquote>
+<p>Although defining <code>n</code> as a natural number (<code>nat</code>) guarantees non-negativity, the explicit precondition clarifies the domain of the function. No other preconditions are required.</p>
+<p><strong>Experimented Failing Preconditions</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Attempted Condition</th>
+<th style="text-align: left;">Result</th>
+<th style="text-align: left;">Reason for Failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>(none)</code></td>
+<td style="text-align: left;">Verified</td>
+<td style="text-align: left;">Dafny inferred bounds from <code>nat</code>. However, this was less clear from a specification standpoint.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>requires n &gt; 0</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">When <span class="arithmatex">\(n = 0\)</span>, the method returns 0, but the postcondition requires <code>res == Trib(n)</code> where <code>Trib(0)</code> is valid. Restricting <code>n &gt; 0</code> made the base-case correct but unnecessary, and Dafny rejected the invariant range <span class="arithmatex">\(1 \leq i \leq n\)</span> when <span class="arithmatex">\(n = 0\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-postconditions">2.2 Postconditions</h3>
+<p><strong>Final Correct Postcondition</strong></p>
+<blockquote>
+<p><code>ensures res == Trib(n)</code></p>
+</blockquote>
+<p>This connects the implementation to the mathematical specification, ensuring functional correctness.</p>
+<p><strong>Experimented Failing Postconditions</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Attempted Condition</th>
+<th style="text-align: left;">Result</th>
+<th style="text-align: left;">Reason for Failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ensures res &gt;= 0</code></td>
+<td style="text-align: left;">Verified</td>
+<td style="text-align: left;">Too weak; does not guarantee functional correctness.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ensures res == Trib(n) + 1</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">Cannot be proven true; contradicts the intended behavior.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ensures res == a</code> (or <code>b</code>, or <code>c</code>)</td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">At return time, only <code>b</code> holds the correct Tribonacci value. Dafny cannot prove the disjunction.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-loop-mechanics">3. Loop Mechanics</h2>
+<p>The loop invariants are critical to prove that the three variables (<span class="arithmatex">\(a, b, c\)</span>) correctly represent the "window" of the Tribonacci sequence at any step <span class="arithmatex">\(i\)</span>.</p>
+<h3 id="31-loop-invariants">3.1 Loop Invariants</h3>
+<p><strong>Final Working Invariants</strong></p>
 <ol>
-<li><strong>Counter Range:</strong> The loop counter i is strictly within the range <code>1 &lt;= i &lt;= n</code>.</li>
-<li><strong>Window Consistency:</strong> The variables a, b, and c always map to specific positions in the sequence relative to i:</li>
-<li>a represents <span class="arithmatex">\(T(i-1)\)</span></li>
-<li>b represents <span class="arithmatex">\(T(i)\)</span> (This is the value tracked for the final result)</li>
-<li>c represents <span class="arithmatex">\(T(i+1)\)</span></li>
+<li><code>invariant 1 &lt;= i &lt;= n</code></li>
+<li><code>invariant a == Trib(i-1)</code></li>
+<li><code>invariant b == Trib(i)</code></li>
+<li><code>invariant c == Trib(i+1)</code></li>
 </ol>
-<p>By maintaining this window, the algorithm ensures that when the loop terminates <code>(at i == n)</code>, the variable b holds the value of <span class="arithmatex">\(T(n)\)</span>.</p>
+<p><strong>Window Consistency</strong>
+The variables always map to specific positions in the sequence relative to <span class="arithmatex">\(i\)</span>:</p>
+<ul>
+<li><span class="arithmatex">\(a\)</span> represents <span class="arithmatex">\(T(i-1)\)</span></li>
+<li><span class="arithmatex">\(b\)</span> represents <span class="arithmatex">\(T(i)\)</span> (This is the value tracked for the final result)</li>
+<li><span class="arithmatex">\(c\)</span> represents <span class="arithmatex">\(T(i+1)\)</span></li>
+</ul>
+<p>By maintaining this window, the algorithm ensures that when the loop terminates (at <span class="arithmatex">\(i == n\)</span>), the variable <span class="arithmatex">\(b\)</span> holds the value of <span class="arithmatex">\(T(n)\)</span>.</p>
+<p><strong>Experimented Failing Loop Invariants</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Invariant Attempt</th>
+<th style="text-align: left;">Result</th>
+<th style="text-align: left;">Why It Failed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>invariant a == Trib(i)</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">Misaligned indexing. After shifting, <span class="arithmatex">\(a\)</span> becomes <code>Trib(i)</code> only <em>after</em> the increment. Dafny rejects it at the loop boundary.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>invariant b == Trib(i+1)</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">Violates the actual meaning of the window: <span class="arithmatex">\(b\)</span> always equals <code>Trib(i)</code>, not <code>Trib(i+1)</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>invariant i &lt; n</code> (only)</td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">Not strong enough; Dafny cannot prove the correctness of the window or final result without linking <span class="arithmatex">\(i\)</span> to the sequence.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Removed <code>a == Trib(i-1)</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">Dafny cannot prove that <code>next == Trib(i+2)</code> because the window reasoning breaks.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Removed <code>c == Trib(i+1)</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">Dafny cannot link <code>next</code> to a correct Tribonacci step.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-loop-variant">3.2 Loop Variant</h3>
+<p><strong>Final Working Variant</strong></p>
+<blockquote>
+<p><code>decreases n - i</code></p>
+</blockquote>
+<p>This ensures termination because the value is initially <span class="arithmatex">\(\ge 0\)</span>, decreases strictly with each iteration, and is bounded below by 0.</p>
+<p><strong>Experimented Failing Variants</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Variant Attempt</th>
+<th style="text-align: left;">Result</th>
+<th style="text-align: left;">Why It Failed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>decreases i</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;"><span class="arithmatex">\(i\)</span> increases each iteration, so Dafny detects a non-decreasing variant.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>decreases n</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;"><span class="arithmatex">\(n\)</span> is constant and does not decrease.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>decreases a</code> (or <code>b</code>, <code>c</code>)</td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">These values can increase or decrease unpredictably; the variant is not well-founded.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>decreases n - i - 1</code></td>
+<td style="text-align: left;">Failed</td>
+<td style="text-align: left;">When <span class="arithmatex">\(i = n - 1\)</span>, the variant becomes 0; the next iteration produces -1, which is invalid.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-verification-test-cases">4. Verification Test Cases</h2>
+<p>The function was tested with both valid and invalid inputs (deliberately breaking invariants or assumptions) to ensure the verifier behaves as expected.</p>
+<h3 id="41-passing-test-cases">4.1 Passing Test Cases</h3>
+<p>All the following cases verified successfully:</p>
+<pre><code>```dafny
+var t0 := ComputeTrib(0);
+assert t0 == 0;
+
+var t1 := ComputeTrib(1);
+assert t1 == 1;
+
+var t2 := ComputeTrib(2);
+assert t2 == 1;
+
+var t3 := ComputeTrib(3);
+assert t3 == 2;
+
+var t4 := ComputeTrib(4);
+assert t4 == 4;
+
+var t5 := ComputeTrib(5);
+assert t5 == 7;
+
+var t10 := ComputeTrib(10);
+assert t10 == 149;
+</code></pre>
+<h1 id="42-fault-injection-experiments">4.2 Fault Injection Experiments</h1>
+<p>To confirm the robustness of the verification, specific faults were intentionally injected into the code.<br />
+The verifier correctly identified all logical errors.</p>
+<h2 id="incorrect-code-implementations">Incorrect Code Implementations</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Fault Scenario</strong></th>
+<th><strong>Code Change</strong></th>
+<th><strong>Verification Result</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Removal of Base Case (<code>n = 0</code>)</strong></td>
+<td>Removed <code>if n == 0 return</code></td>
+<td>Dafny could not prove the postcondition <code>res == Trib(0)</code>.</td>
+</tr>
+<tr>
+<td><strong>Incorrect Window Initialization</strong></td>
+<td>Initialized <code>var a := 1</code></td>
+<td>The initial invariant <code>a == Trib(i-1)</code> failed immediately, as <code>1 ≠ T(0)</code>.</td>
+</tr>
+<tr>
+<td><strong>Incorrect Recurrence Relation</strong></td>
+<td><code>var next := a + b</code> (omitting <code>c</code>)</td>
+<td>The logical step <code>next == Trib(i+2)</code> failed, violating future invariants.</td>
+</tr>
+<tr>
+<td><strong>Returning Incorrect Variable</strong></td>
+<td><code>return c</code></td>
+<td>Postcondition failure. At termination, <code>c = T(n+1)</code>, not <code>T(n)</code>.</td>
+</tr>
+<tr>
+<td><strong>Incorrect Loop Bound</strong></td>
+<td><code>while i &lt;= n</code></td>
+<td>When <code>i = n</code>, the loop attempts to compute values beyond the required scope. The increment sets <code>i</code> to <code>n+1</code>, breaking the invariant <code>i &lt;= n</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="5-summary">5. Summary</h1>
+<p>The following table summarizes the components required for the formally verified implementation of <code>ComputeTrib</code>.</p>
+<h2 id="component-specifications">Component Specifications</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Component</strong></th>
+<th><strong>Final Specification</strong></th>
+<th><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Preconditions</strong></td>
+<td><code>requires n &gt;= 0</code></td>
+<td>Establishes the input domain.</td>
+</tr>
+<tr>
+<td><strong>Postconditions</strong></td>
+<td><code>ensures res == Trib(n)</code></td>
+<td>Links implementation to the recursive mathematical definition.</td>
+</tr>
+<tr>
+<td><strong>Loop Invariants</strong></td>
+<td>- <code>1 &lt;= i &lt;= n</code> <br> - <code>a == Trib(i-1)</code> <br> - <code>b == Trib(i)</code> <br> - <code>c == Trib(i+1)</code></td>
+<td>Essential for proving the sliding‐window logic.</td>
+</tr>
+<tr>
+<td><strong>Loop Variant</strong></td>
+<td><code>decreases n - i</code></td>
+<td>Guarantees algorithm termination.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>The method passed all verification checks for correctness and termination, and the verifier successfully identified all introduced faults during experimental testing.</p>
               
             </div>
           </div><footer>

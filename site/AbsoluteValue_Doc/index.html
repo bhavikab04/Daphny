@@ -52,6 +52,14 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#loop-invariant">Loop Invariant</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cases-where-it-fails">Cases where it fails</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#case-a-the-too-strict-precondition-verification-failure-at-call-site">Case A: The "Too Strict" Precondition (Verification Failure at Call Site)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#case-b-the-wrong-postcondition-verification-failure-in-logic">Case B: The "Wrong" Postcondition (Verification Failure in Logic)</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -112,6 +120,43 @@
 <li>If <code>x &gt;= 0</code>, the method returns x.</li>
 <li>If <code>x &lt; 0</code>, the method returns the negation -x (which results in a positive integer).</li>
 </ul>
+<h2 id="cases-where-it-fails">Cases where it fails</h2>
+<h3 id="case-a-the-too-strict-precondition-verification-failure-at-call-site">Case A: The "Too Strict" Precondition (Verification Failure at Call Site)</h3>
+<p><strong>Hypothesis:</strong> What if we force the user to only input positive numbers?</p>
+<pre><code>dafny
+method AbsStrict(x: int) returns (x': int)
+    requires x &gt;= 0  // &lt;--- BAD PRECONDITION for a general Abs function
+    ensures x' == x
+{
+    x' := x;
+}
+
+method Main() {
+    var res := AbsStrict(-5); // ERROR: Verification Failed Here!
+}
+</code></pre>
+<p><strong>Result: VERIFICATION FAILED</strong>.</p>
+<p><strong>Reason</strong>: The method AbsStrict is verified correctly internally (it does what it says it will do), but the Main method fails verification because we violated the requires <code>x &gt;= 0</code> rule by passing -5.</p>
+<h3 id="case-b-the-wrong-postcondition-verification-failure-in-logic">Case B: The "Wrong" Postcondition (Verification Failure in Logic)</h3>
+<p><strong>Hypothesis</strong>: What if we promise that the output equals the input, even for negative numbers?</p>
+<pre><code>method AbsWrong(x: int) returns (x': int)
+    ensures x' == x // &lt;--- WRONG POSTCONDITION
+{
+    if x &lt; 0 {
+        x' := -x; // Logic returns positive
+    } else {
+        x' := x;
+    }
+}
+</code></pre>
+<p><strong>Result: VERIFICATION FAILED.</strong></p>
+<p><strong>Reason</strong>: Dafny analyzes the if <code>x &lt; 0</code> branch and finds a contradiction:</p>
+<ol>
+<li>It sees <code>x = -5</code>.</li>
+<li>The logic sets <code>x' = 5</code> (because -(-5) = 5).</li>
+<li>The postcondition expects <code>x' == x</code>(i.e., it expects 5 == -5).</li>
+<li>Since <code>5 == -5</code> is false, Dafny reports that the code does not satisfy the postcondition.</li>
+</ol>
               
             </div>
           </div><footer>

@@ -60,6 +60,20 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#loop-invariant">Loop Invariant</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-1-successful-verification-factorial_success">Test 1: Successful Verification (Factorial_Success)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-2-verification-failure-cases">Test 2: Verification Failure Cases</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#case-a-failure-due-to-incorrect-postcondition-factorial_fail_postcondition">Case A: Failure Due to Incorrect Postcondition (Factorial_Fail_Postcondition)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#case-b-failure-due-to-incorrect-loop-invariant-factorial_fail_invariant_init">Case B: Failure Due to Incorrect Loop Invariant (Factorial_Fail_Invariant_Init)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#case-c-failure-due-to-incorrect-loop-invariant-factorial_fail_invariant_maintenance">Case C: Failure Due to Incorrect Loop Invariant (Factorial_Fail_Invariant_Maintenance)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#case-d-failure-due-to-incorrect-loop-variant-factorial_fail_variant">Case D: Failure Due to Incorrect Loop Variant (Factorial_Fail_Variant)</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -111,6 +125,148 @@
 <li><strong>Maintenance:</strong> As i increments, result is updated to result * i, maintaining the invariant that result equals <span class="arithmatex">\(i\!\)</span>.</li>
 <li><strong>Termination:</strong> When the loop finishes, <code>i == n</code>. Because the invariant holds, result must equal <code>FactorialFunction(n)</code>.</li>
 </ol>
+<p>Here we have documented the testing of the iterative <code>Factorial</code> method using formal verification components in Dafny. The goal is to demonstrate the purpose of preconditions (<code>requires</code>), postconditions (<code>ensures</code>), loop invariants (<code>invariant</code>), and loop variants (<code>decreases</code>) by observing when the verification process succeeds or fails against the logic in the file <code>DafnyFactorialVerification.dfy</code>.</p>
+<h2 id="test-1-successful-verification-factorial_success">Test 1: Successful Verification (Factorial_Success)</h2>
+<p>This case represents the correctly verified code. The verifier confirms that the code meets its specification.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Code</th>
+<th style="text-align: left;">Status</th>
+<th style="text-align: left;">Verification Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Precondition</strong> (<code>requires</code>)</td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Pass</td>
+<td style="text-align: left;">Input <code>n</code> is guaranteed to be a natural number (<code>nat</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Postcondition</strong> (<code>ensures</code>)</td>
+<td style="text-align: left;"><code>f == FactorialFunction(n)</code></td>
+<td style="text-align: left;">Pass</td>
+<td style="text-align: left;">The verifier confirms that upon termination, the final result <code>f</code> is mathematically equal to <span class="arithmatex">\(n!\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Loop Invariant</strong> (<code>invariant</code>)</td>
+<td style="text-align: left;"><code>result == FactorialFunction(i)</code></td>
+<td style="text-align: left;">Pass</td>
+<td style="text-align: left;">The invariant is successfully proven to be true at initialization, maintained in the loop body, and guarantees the postcondition at termination.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Loop Variant</strong> (<code>decreases</code>)</td>
+<td style="text-align: left;"><code>n - i</code></td>
+<td style="text-align: left;">Pass</td>
+<td style="text-align: left;">The value strictly decreases from <code>n</code> to <code>0</code> with each step, guaranteeing the loop terminates.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="test-2-verification-failure-cases">Test 2: Verification Failure Cases</h2>
+<p>The following test methods contain intentional errors in either the code logic or the formal specification, causing the Dafny verifier to fail and highlight the exact point of contradiction.</p>
+<h3 id="case-a-failure-due-to-incorrect-postcondition-factorial_fail_postcondition">Case A: Failure Due to Incorrect Postcondition (Factorial_Fail_Postcondition)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Intentional Change</th>
+<th style="text-align: left;">Failure Location</th>
+<th style="text-align: left;">Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Postcondition</strong> (<code>ensures</code>)</td>
+<td style="text-align: left;"><code>ensures f == FactorialFunction(n) + 1</code></td>
+<td style="text-align: left;">The <code>ensures</code> clause</td>
+<td style="text-align: left;">The method computes <code>f = n!</code>, but the specification <em>demands</em> <code>f = n! + 1</code>. The proof that <span class="arithmatex">\(n! = n! + 1\)</span> fails for all <span class="arithmatex">\(n \ge 0\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dafny Error</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><em>A postcondition will not hold on this return path.</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="case-b-failure-due-to-incorrect-loop-invariant-factorial_fail_invariant_init">Case B: Failure Due to Incorrect Loop Invariant (Factorial_Fail_Invariant_Init)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Intentional Change</th>
+<th style="text-align: left;">Failure Location</th>
+<th style="text-align: left;">Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Code Initialization</strong></td>
+<td style="text-align: left;"><code>var result := 0;</code> (Should be <code>1</code>)</td>
+<td style="text-align: left;">The <code>invariant result == FactorialFunction(i)</code></td>
+<td style="text-align: left;">At the start of the loop, <code>i=0</code>. The invariant requires <span class="arithmatex">\(result = 0! = 1\)</span>. The code provides <span class="arithmatex">\(result = 0\)</span>, violating the invariant before the loop begins.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dafny Error</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><em>Loop invariant may not hold at the beginning of the loop.</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="case-c-failure-due-to-incorrect-loop-invariant-factorial_fail_invariant_maintenance">Case C: Failure Due to Incorrect Loop Invariant (Factorial_Fail_Invariant_Maintenance)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Intentional Change</th>
+<th style="text-align: left;">Failure Location</th>
+<th style="text-align: left;">Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Loop Body</strong></td>
+<td style="text-align: left;">Skipped <code>result := result * i;</code></td>
+<td style="text-align: left;">The <code>invariant result == FactorialFunction(i)</code></td>
+<td style="text-align: left;">The invariant holds for the old <code>i</code>. When <code>i</code> increments, the stored <code>result</code> is only <span class="arithmatex">\(i!\)</span> (because multiplication was skipped), which is not equal to <span class="arithmatex">\((i+1)!\)</span>, violating the invariant for the new value of <code>i</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dafny Error</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><em>Loop invariant may not be maintained by the loop body.</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="case-d-failure-due-to-incorrect-loop-variant-factorial_fail_variant">Case D: Failure Due to Incorrect Loop Variant (Factorial_Fail_Variant)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Intentional Change</th>
+<th style="text-align: left;">Failure Location</th>
+<th style="text-align: left;">Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Loop Variant</strong> (<code>decreases</code>)</td>
+<td style="text-align: left;"><code>decreases n</code></td>
+<td style="text-align: left;">The <code>decreases n</code> clause</td>
+<td style="text-align: left;">The variant expression must strictly decrease with every iteration. Since <code>n</code> is a constant and remains unchanged, it fails the strict decrease requirement, indicating a potential non-terminating loop.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dafny Error</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><em>The loop variant may not decrease.</em></td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>
