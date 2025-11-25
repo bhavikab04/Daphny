@@ -36,3 +36,29 @@ The loop invariants explain "why it works" to the verifier, acting as the induct
   Since I explicitly asked the verifier to check `requires a != null`, which is now redundant and causes an error.
 
 - It has started working from the 2nd version.
+
+## Cases Where Verification Failed (Failing Proofs)
+
+If a specification element is incorrect or missing, Dafny's verifier will fail the proof. These failures are critical because they highlight **logical gaps** in the formal proof.
+
+---
+
+### Failure Case A: Missing Postcondition (`ensures`)
+
+This failure occurs when a required property of the output is omitted, violating the intended logic (finding the **first** negative number).
+
+| Element                   | Description/Change                                                               | Dafny's Failure Point                                                                             | Rationale for Failure                                                                                                                                                                                   |
+| :------------------------ | :------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Missing Postcondition** | Omitted: `ensures index < a.Length ==> forall k :: 0 <= k < index ==> a[k] >= 0` | The verifier only proves the method found _a_ negative number, not the **first** one.             | The lack of a constraint on $0 \le k < index$ allows the method to skip earlier negative numbers. <br><br> For example, the verifier technically accepts `index = 4` for the array `[1, -1, 1, 1, -5]`. |
+| **Result**                | Omit the postcondition that guarantees non-negativity before the result.         | The verifier cannot prove the final state is correct because the specification is **incomplete**. | The verifier can only ensure the element at `index` is negative, not that it is the **earliest** one.                                                                                                   |
+
+---
+
+### Failure Case B: Weak Loop Invariant
+
+This is a structural proof failure. The loop invariant is the only mechanism that allows Dafny to carry proof knowledge from the beginning of the loop to its end.
+
+| Element                    | Description/Change                                        | Dafny's Failure Point                                                                                                                                              | Rationale for Failure                                                      |
+| :------------------------- | :-------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------- |
+| **Missing Loop Invariant** | Omitted: `invariant forall k :: 0 <= k < i ==> a[k] >= 0` | **Assertion Failure on Exit:** The verifier cannot prove the postcondition `ensures index == a.Length ==> forall k :: 0 <= k < a.Length ==> a[k] >= 0`.            |
+| **Reason**                 | Omit the core logic that tracks the history of the loop.  | When the loop finishes, $i = a.Length$. Without this invariant, Dafny has **no memory** that the array elements checked up to $i-1$ were ever proven non-negative. | The proof **collapses** because the proof history inside the loop is lost. |
