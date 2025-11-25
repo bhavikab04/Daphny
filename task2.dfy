@@ -19,6 +19,7 @@ method FindFirstNegative(a: array<int>) returns (index: int)
     invariant 0 <= i <= a.Length
     // We know everything checked so far (0 to i-1) is non-negative
     invariant forall k :: 0 <= k < i ==> a[k] >= 0
+    //Loop variant
     decreases a.Length - i
   {
     if a[i] < 0 {
