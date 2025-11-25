@@ -1,4 +1,4 @@
-// --- 1. Specification: Recursive Factorial Function ---
+// Recursive Factorial Function
 // This pure function defines the mathematical specification of factorial (n!).
 // It is used exclusively in the postcondition and loop invariant to verify
 // the iterative method below.
@@ -10,10 +10,10 @@ function FactorialFunction(n: nat): nat
 //Iterative Factorial Method :
 method Factorial(n: nat) returns (f: nat)
   // Precondition :
-  // The input 'n' is constrained to 'nat' (non-negative integer).
+  // The input 'n' is constrained to 'nat' (natural number).
   requires true // n: nat is sufficient for the domain
   
-  // Postcondition (ensures): What must be true when the method finishes.
+  // Postcondition:
   // The result 'f' must equal the mathematically defined factorial of 'n'.
   ensures f == FactorialFunction(n)
 {
