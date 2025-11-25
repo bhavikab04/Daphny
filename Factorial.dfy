@@ -7,9 +7,9 @@ function FactorialFunction(n: nat): nat
   if n == 0 then 1 else n * FactorialFunction(n-1)
 }
 
-// --- 2. Implementation: Iterative Factorial Method ---
+//Iterative Factorial Method :
 method Factorial(n: nat) returns (f: nat)
-  // Precondition (requires): What must be true before the method runs.
+  // Precondition :
   // The input 'n' is constrained to 'nat' (non-negative integer).
   requires true // n: nat is sufficient for the domain
   
